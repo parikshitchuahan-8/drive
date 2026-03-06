@@ -1,89 +1,335 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
-    <link
-    href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
-    rel="stylesheet"
-/>
-  </head>
-  <body>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <main class="p-4 bg-gray-100 dark:bg-gray-800 h-screen w-screen">
-        <button onclick="showPop()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" >
-            upload file
-        </button>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-        <div class="pop hidden backdrop-blur fixed top-0 left-0 h-screen w-screen flex items-center justify-center p-4">
-            
-            <form action="/upload-file"
-             method="post"
-             enctype="multipart/form-data">
-<div class="flex items-center justify-center w-96">
-    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-        <div class="flex flex-col items-center justify-center pt-5 pb-6">
-            <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-            </svg>
-            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-        </div>
-        <input name="file" id="dropzone-file" type="file" class="hidden" />
-    </label>
-</div> 
-                <button type="submit" class="mt-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                    Upload file
-                </button>
-            </form> 
+<link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet">
 
-<button class="absolute top-2 right-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="hidePop()">
-            <i class="ri-close-line"></i>
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<main class="p-6 bg-gray-100 dark:bg-gray-800 min-h-screen">
+
+<!-- HEADER -->
+
+<div class="flex justify-between items-center">
+
+<h1 class="text-2xl font-bold text-white">My Drive</h1>
+
+<a href="/user/logout"
+class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+Logout
+</a>
+
+</div>
+
+
+<!-- ACTION BAR -->
+
+<div class="flex items-center gap-4 mt-6">
+
+<button onclick="showPop()"
+class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+Upload File
 </button>
 
-        </div>
-<div class="files flex flex-col gap-4 mt-6">
-  <% files.forEach(file => { %>
-    <div class="flex justify-between items-center p-4 bg-white shadow rounded-lg">
-      <div class="text-gray-800 font-medium"><%= file.originalname %></div>
-      
-      <div class="flex gap-3">
-        <!-- View Button -->
-        <a href="<%= file.path %>" target="_blank"
-           class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 flex items-center gap-1">
-          <i class="ri-eye-line"></i> View
-        </a>
+<input
+type="text"
+id="search"
+placeholder="Search files..."
+class="p-2 border rounded w-64"
+/>
 
-        <!-- Download Button (using Cloudinary fl_attachment) -->
-        <a href="<%= file.path.replace('/upload/', '/upload/fl_attachment/') %>" 
-           class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 flex items-center gap-1">
-          <i class="ri-download-line"></i> Download
-        </a>
-      </div>
-    </div>
-  <% }) %>
+</div>
+
+<h2 class="text-white mt-4 text-sm">
+Total Files: <%= files.length %>
+</h2>
+
+
+
+<!-- UPLOAD POPUP -->
+
+<div class="pop hidden backdrop-blur fixed top-0 left-0 h-screen w-screen flex items-center justify-center">
+
+<form id="uploadForm" action="/upload-file" method="POST" enctype="multipart/form-data">
+
+<div class="flex items-center justify-center w-96">
+
+<label for="dropzone-file"
+class="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50">
+
+<div class="flex flex-col items-center justify-center pt-5 pb-6">
+
+<i class="ri-upload-cloud-line text-4xl text-gray-500 mb-3"></i>
+
+<p class="text-sm text-gray-500">
+Click to upload or drag and drop
+</p>
+
+<p class="text-xs text-gray-400">
+PNG, JPG, PDF etc
+</p>
+
+</div>
+
+<input name="file" id="dropzone-file" type="file" class="hidden">
+
+</label>
+
+</div>
+
+<button
+type="submit"
+class="mt-4 bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded">
+
+Upload File
+
+</button>
+<div id="progressContainer" class="w-full bg-gray-200 rounded mt-4 hidden">
+
+<div 
+id="progressBar"
+class="bg-blue-500 text-xs text-white text-center p-1 leading-none rounded"
+style="width:0%">
+
+0%
+
+</div>
+
+</div>
+
+</form>
+
+<button
+onclick="hidePop()"
+class="absolute top-6 right-6 bg-red-500 text-white px-3 py-1 rounded">
+
+<i class="ri-close-line"></i>
+
+</button>
+
 </div>
 
 
 
-    </main>
+<!-- FILE LIST -->
+
+<div class="files flex flex-col gap-4 mt-6">
+
+<% if(files.length === 0) { %>
+
+<div class="text-center text-gray-400 mt-20">
+
+<i class="ri-folder-open-line text-5xl"></i>
+
+<p>No files uploaded yet</p>
+
+</div>
+
+<% } %>
 
 
 
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+<% files.forEach(file => { %>
 
-    <script>
-        function showPop() {
-            document.querySelector(".pop").style.display = "flex";
-         
-        }
+<div class="file-card flex justify-between items-center p-4 bg-white shadow rounded-lg">
 
-        function hidePop() {
-            document.querySelector(".pop").style.display = "none";
-        }
-    </script>
-  </body>
+<div>
+
+<!-- FILE NAME + ICON -->
+
+<div class="flex items-center gap-2 text-gray-800 font-medium">
+
+<% if(file.originalname.endsWith(".png") || file.originalname.endsWith(".jpg") || file.originalname.endsWith(".jpeg")) { %>
+
+<i class="ri-image-line text-blue-500"></i>
+
+<% } else if(file.originalname.endsWith(".pdf")) { %>
+
+<i class="ri-file-pdf-line text-red-500"></i>
+
+<% } else { %>
+
+<i class="ri-file-line text-gray-500"></i>
+
+<% } %>
+
+<%= file.originalname %>
+
+</div>
+
+
+
+<!-- FILE SIZE -->
+
+<div class="text-xs text-gray-500">
+
+<%= (file.size / 1024).toFixed(2) %> KB
+
+</div>
+
+
+
+<!-- UPLOAD TIME -->
+
+<div class="text-xs text-gray-400">
+
+Uploaded: <%= new Date(file.createdAt).toLocaleString() %>
+
+</div>
+
+</div>
+
+
+
+<!-- ACTION BUTTONS -->
+
+<div class="flex gap-3">
+
+<a
+href="<%= file.path %>"
+target="_blank"
+class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 flex items-center gap-1">
+
+<i class="ri-eye-line"></i>
+View
+
+</a>
+
+
+<a
+href="<%= file.path.replace('/upload/','/upload/fl_attachment/') %>"
+class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 flex items-center gap-1">
+
+<i class="ri-download-line"></i>
+Download
+
+</a>
+
+<button 
+onclick="copyLink('<%= file._id %>')"
+class="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600 flex items-center gap-1">
+
+<i class="ri-share-line"></i>
+Copy Link
+
+</button>
+
+
+<a
+href="/delete/<%= file._id %>"
+class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 flex items-center gap-1">
+
+<i class="ri-delete-bin-line"></i>
+Delete
+
+</a>
+
+</div>
+
+</div>
+
+<% }) %>
+
+</div>
+
+</main>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+
+
+<script>
+
+/* POPUP */
+
+function showPop(){
+document.querySelector(".pop").style.display="flex"
+}
+
+function hidePop(){
+document.querySelector(".pop").style.display="none"
+}
+
+
+/* SEARCH FILE */
+
+const search=document.getElementById("search")
+
+search.addEventListener("keyup",function(){
+
+const value=this.value.toLowerCase()
+
+const rows=document.querySelectorAll(".file-card")
+
+rows.forEach(row=>{
+
+const name=row.innerText.toLowerCase()
+
+row.style.display=name.includes(value) ? "" : "none"
+
+})
+
+})
+
+function copyLink(id){
+
+const link = window.location.origin + "/share/" + id
+
+navigator.clipboard.writeText(link)
+
+alert("Share link copied!")
+
+}
+const form = document.getElementById("uploadForm");
+
+form.addEventListener("submit", function(e){
+
+e.preventDefault();
+
+const formData = new FormData(form);
+
+const xhr = new XMLHttpRequest();
+
+xhr.open("POST","/upload-file");
+
+document.getElementById("progressContainer").style.display="block";
+
+xhr.upload.addEventListener("progress", function(e){
+
+if(e.lengthComputable){
+
+const percent = Math.round((e.loaded/e.total)*100);
+
+const bar = document.getElementById("progressBar");
+
+bar.style.width = percent + "%";
+
+bar.innerText = percent + "%";
+
+}
+
+});
+
+xhr.onload = function(){
+
+window.location.reload();
+
+};
+
+xhr.send(formData);
+
+});
+</script>
+
+
+</body>
 </html>

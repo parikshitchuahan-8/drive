@@ -13,7 +13,12 @@ const fileSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref:"users",
         required: [true, "user is required"]
-    }
+    },
+    createdAt: {
+ type: Date,
+ default: Date.now
+}
+
 })
 
 const file = mongoose.model("file", fileSchema);

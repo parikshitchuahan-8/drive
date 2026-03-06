@@ -59,6 +59,17 @@ router.get("/delete/:id", authMiddleware, async (req, res) => {
   res.redirect("/home");
 
 });
+router.get("/share/:id", async (req, res) => {
+
+  const file = await fileModel.findById(req.params.id);
+
+  if(!file){
+    return res.send("File not found");
+  }
+
+  res.redirect(file.path);
+
+});
 
 router.get("/download/:publicId", authMiddleware, async (req, res) => {
   const loggedInUserId = req.user.id;
