@@ -16,11 +16,11 @@ router.post('/register',
   body("email").trim().isEmail().isLength({ min: 10 }),
   body("password").trim().isLength({ min: 6 }),
   async (req, res) => {
-    console.log("Received req.body:", req.body);  // 👈 DEBUG LOG
+    console.log("Received req.body:", req.body);  
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      console.log("Validation errors:", errors.array()); // 👈 LOG ERRORS
+      console.log("Validation errors:", errors.array()); 
       return res.status(400).json({ errors: errors.array(), message: "invalid data" });
     }
 
@@ -30,7 +30,7 @@ router.post('/register',
          email,
           password: hashPassword
          });
-    res.json(newUser);
+    res.redirect("/user/login");
   }
 );
 
@@ -74,7 +74,8 @@ async (req, res) => {
 
 
     res.cookie("token", token);
-    res.send("login success",);
+    res.redirect("/home");
+
        
 
 

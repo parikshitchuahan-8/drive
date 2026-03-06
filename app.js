@@ -13,15 +13,18 @@ const indexRouter = require('./routes/index.routes.js');
 app.set('view engine', 'ejs');
 app.use(cookieParser());
 
-// ✅ Body parsers must come first
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/",indexRouter);
 app.use("/upload-file", indexRouter);
-// ✅ Routes after body parsing middleware
+
 app.use("/user", userRouter);
 
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
+
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log("Server is running");
 });

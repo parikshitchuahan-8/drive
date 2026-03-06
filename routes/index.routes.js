@@ -29,8 +29,8 @@ const  newFile = await fileModel.create({
   originalname: req.file.originalname,
   user:req.user.id
 });
-
-res.json(newFile); 
+res.redirect("/home");
+//res.json(newFile); 
 
    //res.send(req.file); 
 
