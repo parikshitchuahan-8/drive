@@ -16,6 +16,9 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get("/", (req, res) => {
+  res.redirect("user/login");
+});
 app.use("/",indexRouter);
 app.use("/upload-file", indexRouter);
 
