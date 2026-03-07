@@ -23,9 +23,9 @@ res.render("home",{
 
 router.post("/upload-file",authMiddleware, upload.single("file"),async (req, res) => {
 
-
+ 
 const  newFile = await fileModel.create({
-  path: req.file.path,  
+  path: req.file.secure_url,
   originalname: req.file.originalname,
   user:req.user.id
 });
