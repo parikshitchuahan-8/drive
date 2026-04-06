@@ -1,80 +1,78 @@
-# Drive Clone – Cloud File Storage Web Application
+# Drive Clone
 
-This project is a cloud-based file storage web application inspired by Google Drive. It allows users to upload, view, download, and manage files through a web interface.
+Drive Clone is a server-rendered file storage application inspired by Google Drive. Users can create accounts, upload files to Cloudinary, browse their stored assets, and manage downloads from a simple web dashboard.
 
-The application is built using Node.js and Express.js for backend development, MongoDB for storing file metadata, and Cloudinary for cloud-based file storage. The frontend uses EJS templates and Tailwind CSS to provide a clean and responsive UI.
+## Highlights
 
-## Features
+- User registration and login flow
+- JWT-based authentication with cookies
+- File uploads handled with Multer
+- Cloudinary-backed file storage
+- MongoDB for user and file metadata
+- EJS-based interface styled with Tailwind CSS
 
-- User registration and login
-- Upload files to cloud storage
-- View uploaded files
-- Download files
-- Delete files
-- Secure backend using Express.js
-- Cloudinary integration for file storage
-- MongoDB database for storing file information
+## Tech Stack
 
- ## Tech Stack
-
-Backend
 - Node.js
 - Express.js
-
-Database
-- MongoDB
-- Mongoose
-
-Cloud Storage
+- MongoDB with Mongoose
 - Cloudinary
-
-File Handling
 - Multer
-
-Frontend
 - EJS
 - Tailwind CSS
-- Flowbite
-
-## Installation
-
-1. Clone the repository
-
-git clone https://github.com/parikshitchauhan-8/drive.git
-
-2. Go to the project directory
-
-cd drive
-
-3. Install dependencies
-
-npm install
-
-4. Create a .env file and add:
-
-PORT=3000
-MONGO_URI=your_mongodb_connection_string
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
-
-5. Start the server
-npm start
 
 ## Project Structure
 
-drive
-│
-├── config
-├── middleware
-├── models
-├── routes
-├── views
-│
-├── app.js
-├── package.json
-└── .env
+```text
+drive/
+|-- config/
+|-- middleware/
+|-- models/
+|-- routes/
+|-- views/
+|-- uploads/
+|-- app.js
+`-- package.json
+```
+
+## Local Setup
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Copy the example environment file and add your own values:
+
+```bash
+cp .env.example .env
+```
+
+3. Start the development server:
+
+```bash
+npm start
+```
+
+4. Open `http://localhost:3000`
+
+## Environment Variables
+
+Use the values in `.env.example` as a template:
+
+- `PORT`
+- `MONGO_URI`
+- `JWT_SECRET`
+- `CLOUD_NAME`
+- `CLOUD_API_KEY`
+- `CLOUD_API_SECRET`
+
+## Notes
+
+- This repository should not include runtime secrets, uploaded files, or installed dependencies in source control.
+- Cloudinary stores uploaded assets while MongoDB stores the related metadata.
 
 ## Author
-Parikshit Chauhan  
-GitHub: https://github.com/parikshitchauhan-8
+
+Parikshit Chauhan
