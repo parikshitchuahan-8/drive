@@ -1,6 +1,6 @@
-# Drive Clone
+# nimbus-drive
 
-Drive Clone is a server-rendered file storage application inspired by Google Drive. Users can create accounts, upload files to Cloudinary, browse their stored assets, and manage downloads from a simple web dashboard.
+nimbus-drive is a server-rendered file storage application inspired by Google Drive. Users can create accounts, upload files to Cloudinary, browse their stored assets, and manage downloads from a polished web dashboard.
 
 ## Highlights
 
@@ -24,7 +24,7 @@ Drive Clone is a server-rendered file storage application inspired by Google Dri
 ## Project Structure
 
 ```text
-drive/
+nimbus-drive/
 |-- config/
 |-- middleware/
 |-- models/
