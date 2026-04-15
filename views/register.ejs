@@ -3,44 +3,92 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Register</title>
+  <title>Register | My Drive</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/app.css">
 </head>
-<body class="bg-gray-100 dark:bg-gray-800 h-screen w-screen flex justify-center items-center">
+<body class="app-shell">
+  <div class="orb orb-one"></div>
+  <div class="orb orb-two"></div>
+  <div class="orb orb-three"></div>
 
-  <form class="grid gap-6 mb-6 md:grid-cols-1 bg-white p-6 rounded-lg shadow-md dark:bg-gray-900" action="/user/register" method="POST">
-    
-    <div>
-      <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
-      <input name="username" type="text" id="username" placeholder="park" required
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" />
-    </div>
+  <main class="auth-layout">
+    <section class="hero-panel animate-rise">
+      <div>
+        <a href="/user/login" class="brand">
+          <span class="brand-badge"><i class="ri-stack-line"></i></span>
+          <span>MY DRIVE</span>
+        </a>
 
-    <div>
-      <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email address</label>
-      <input name="email" type="email" id="email" placeholder="john.doe@company.com" required
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" />
-    </div>
+        <div class="mt-12">
+          <span class="eyebrow">
+            <i class="ri-sparkling-line"></i>
+            Fresh, clean file management
+          </span>
+          <h1 class="hero-title">Create your space and start uploading.</h1>
+          <p class="hero-copy max-w-xl text-lg">
+            Bring your documents, images, and downloads into a dashboard that feels modern, calm, and easy to use.
+          </p>
+        </div>
+      </div>
 
-    <div>
-      <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-      <input name="password" type="password" id="password" placeholder="•••••••••" required
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" />
-    </div>
+      <div class="hero-grid">
+        <div class="stat-card">
+          <strong>Upload</strong>
+          <span class="muted">Add images, PDFs, and more with less friction.</span>
+        </div>
+        <div class="stat-card">
+          <strong>Share</strong>
+          <span class="muted">Copy links in one click when you need them.</span>
+        </div>
+        <div class="stat-card">
+          <strong>Track</strong>
+          <span class="muted">See your library and activity at a glance.</span>
+        </div>
+      </div>
+    </section>
 
-    <button type="submit"
-      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-      Submit
-    </button>
-    <div style="margin-top:15px; text-align:center; color:#ddd;">
-   Already have an account?
-  <a href="/user/login" style="color:#4da6ff; font-weight:500;">
-    Login
-  </a>
-</div>
-  </form>
+    <section class="auth-card animate-rise" style="animation-delay: 0.1s;">
+      <span class="eyebrow">
+        <i class="ri-user-add-line"></i>
+        Join My Drive
+      </span>
+      <h1 class="mt-5">Create your account</h1>
+      <p class="muted mt-3">
+        Set up a profile to manage your files from a cleaner, more thoughtful workspace.
+      </p>
 
-  <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+      <form class="auth-form" action="/user/register" method="POST">
+        <div class="field-group">
+          <label for="username" class="field-label">Username</label>
+          <input name="username" type="text" id="username" placeholder="Choose a username" required class="field-input" />
+        </div>
+
+        <div class="field-group">
+          <label for="email" class="field-label">Email address</label>
+          <input name="email" type="email" id="email" placeholder="you@example.com" required class="field-input" />
+        </div>
+
+        <div class="field-group">
+          <label for="password" class="field-label">Password</label>
+          <input name="password" type="password" id="password" placeholder="Create a strong password" required class="field-input" />
+        </div>
+
+        <button type="submit" class="button-primary">
+          <i class="ri-arrow-right-up-line"></i>
+          Register
+        </button>
+      </form>
+
+      <p class="auth-footer">
+        Already have an account?
+        <a href="/user/login">Login</a>
+      </p>
+    </section>
+  </main>
 </body>
 </html>

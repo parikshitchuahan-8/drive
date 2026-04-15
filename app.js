@@ -12,6 +12,7 @@ const indexRouter = require('./routes/index.routes.js');
 
 app.set('view engine', 'ejs');
 app.use(cookieParser());
+app.use(express.static("public"));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
