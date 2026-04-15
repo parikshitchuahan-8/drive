@@ -3,39 +3,87 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Register</title>
+  <title>Login | My Drive</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/app.css">
 </head>
-<body class="bg-gray-100 dark:bg-gray-800 h-screen w-screen flex justify-center items-center">
+<body class="app-shell">
+  <div class="orb orb-one"></div>
+  <div class="orb orb-two"></div>
+  <div class="orb orb-three"></div>
 
-  <form class="grid gap-6 mb-6 md:grid-cols-1 bg-white p-6 rounded-lg shadow-md dark:bg-gray-900" action="/user/login" method="POST">
-    
-    <div>
-      <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
-      <input name="username" type="text" id="username" placeholder="park" required
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" />
-    </div>
+  <main class="auth-layout">
+    <section class="hero-panel animate-rise">
+      <div>
+        <a href="/user/login" class="brand">
+          <span class="brand-badge"><i class="ri-cloud-line"></i></span>
+          <span>MY DRIVE</span>
+        </a>
 
+        <div class="mt-12">
+          <span class="eyebrow">
+            <i class="ri-shield-check-line"></i>
+            Personal cloud space
+          </span>
+          <h1 class="hero-title">Keep every file organized and ready.</h1>
+          <p class="hero-copy max-w-xl text-lg">
+            A cleaner dashboard for uploading, searching, sharing, and downloading your files without the clutter.
+          </p>
+        </div>
+      </div>
 
-    <div>
-      <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-      <input name="password" type="password" id="password" placeholder="•••••••••" required
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" />
-    </div>
+      <div class="hero-grid">
+        <div class="stat-card">
+          <strong>Fast</strong>
+          <span class="muted">Drop files in and keep momentum.</span>
+        </div>
+        <div class="stat-card">
+          <strong>Simple</strong>
+          <span class="muted">Find what you need in seconds.</span>
+        </div>
+        <div class="stat-card">
+          <strong>Secure</strong>
+          <span class="muted">Private access tied to your account.</span>
+        </div>
+      </div>
+    </section>
 
-    <button type="submit"
-      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-      Submit
-    </button>
-   <div style="margin-top:15px; text-align:center; color:#ddd;">
-  Don't have an account?
-  <a href="/user/register" style="color:#4da6ff; font-weight:500;">
-    Register
-  </a>
-</div>
-  </form>
+    <section class="auth-card animate-rise" style="animation-delay: 0.1s;">
+      <span class="eyebrow">
+        <i class="ri-lock-2-line"></i>
+        Welcome back
+      </span>
+      <h1 class="mt-5">Sign in to your workspace</h1>
+      <p class="muted mt-3">
+        Pick up where you left off and manage your files from one polished dashboard.
+      </p>
 
-  <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+      <form class="auth-form" action="/user/login" method="POST">
+        <div class="field-group">
+          <label for="username" class="field-label">Username</label>
+          <input name="username" type="text" id="username" placeholder="Enter your username" required class="field-input" />
+        </div>
+
+        <div class="field-group">
+          <label for="password" class="field-label">Password</label>
+          <input name="password" type="password" id="password" placeholder="Enter your password" required class="field-input" />
+        </div>
+
+        <button type="submit" class="button-primary">
+          <i class="ri-login-circle-line"></i>
+          Login
+        </button>
+      </form>
+
+      <p class="auth-footer">
+        Don't have an account?
+        <a href="/user/register">Create one</a>
+      </p>
+    </section>
+  </main>
 </body>
 </html>

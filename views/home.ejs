@@ -1,335 +1,236 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<title>My Drive</title>
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
-<link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet">
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
-
+<link rel="stylesheet" href="/styles/app.css">
 </head>
-
-<body>
-
-<main class="p-6 bg-gray-100 dark:bg-gray-800 min-h-screen">
-
-<!-- HEADER -->
-
-<div class="flex justify-between items-center">
-
-<h1 class="text-2xl font-bold text-white">My Drive</h1>
-
-<a href="/user/logout"
-class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-Logout
-</a>
-
-</div>
-
-
-<!-- ACTION BAR -->
-
-<div class="flex items-center gap-4 mt-6">
-
-<button onclick="showPop()"
-class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
-Upload File
-</button>
-
-<input
-type="text"
-id="search"
-placeholder="Search files..."
-class="p-2 border rounded w-64"
-/>
-
-</div>
-
-<h2 class="text-white mt-4 text-sm">
-Total Files: <%= files.length %>
-</h2>
-
-
-
-<!-- UPLOAD POPUP -->
-
-<div class="pop hidden backdrop-blur fixed top-0 left-0 h-screen w-screen flex items-center justify-center">
-
-<form id="uploadForm" action="/upload-file" method="POST" enctype="multipart/form-data">
-
-<div class="flex items-center justify-center w-96">
-
-<label for="dropzone-file"
-class="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50">
-
-<div class="flex flex-col items-center justify-center pt-5 pb-6">
-
-<i class="ri-upload-cloud-line text-4xl text-gray-500 mb-3"></i>
-
-<p class="text-sm text-gray-500">
-Click to upload or drag and drop
-</p>
-
-<p class="text-xs text-gray-400">
-PNG, JPG, PDF etc
-</p>
-
-</div>
-
-<input name="file" id="dropzone-file" type="file" class="hidden">
-
-</label>
-
-</div>
-
-<button
-type="submit"
-class="mt-4 bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded">
-
-Upload File
-
-</button>
-<div id="progressContainer" class="w-full bg-gray-200 rounded mt-4 hidden">
-
-<div 
-id="progressBar"
-class="bg-blue-500 text-xs text-white text-center p-1 leading-none rounded"
-style="width:0%">
-
-0%
-
-</div>
-
-</div>
-
-</form>
-
-<button
-onclick="hidePop()"
-class="absolute top-6 right-6 bg-red-500 text-white px-3 py-1 rounded">
-
-<i class="ri-close-line"></i>
-
-</button>
-
-</div>
-
-
-
-<!-- FILE LIST -->
-
-<div class="files flex flex-col gap-4 mt-6">
-
-<% if(files.length === 0) { %>
-
-<div class="text-center text-gray-400 mt-20">
-
-<i class="ri-folder-open-line text-5xl"></i>
-
-<p>No files uploaded yet</p>
-
-</div>
-
-<% } %>
-
-
-
-<% files.forEach(file => { %>
-
-<div class="file-card flex justify-between items-center p-4 bg-white shadow rounded-lg">
-
-<div>
-
-<!-- FILE NAME + ICON -->
-
-<div class="flex items-center gap-2 text-gray-800 font-medium">
-
-<% if(file.originalname.endsWith(".png") || file.originalname.endsWith(".jpg") || file.originalname.endsWith(".jpeg")) { %>
-
-<i class="ri-image-line text-blue-500"></i>
-
-<% } else if(file.originalname.endsWith(".pdf")) { %>
-
-<i class="ri-file-pdf-line text-red-500"></i>
-
-<% } else { %>
-
-<i class="ri-file-line text-gray-500"></i>
-
-<% } %>
-
-<%= file.originalname %>
-
-</div>
-
-
-
-<!-- FILE SIZE -->
-
-<div class="text-xs text-gray-500">
-
-<%= (file.size / 1024).toFixed(2) %> KB
-
-</div>
-
-
-
-<!-- UPLOAD TIME -->
-
-<div class="text-xs text-gray-400">
-
-Uploaded: <%= new Date(file.createdAt).toLocaleString() %>
-
-</div>
-
-</div>
-
-
-
-<!-- ACTION BUTTONS -->
-
-<div class="flex gap-3">
-
-<a
-href="<%= file.path %>"
-target="_blank"
-class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 flex items-center gap-1">
-
-<i class="ri-eye-line"></i>
-View
-
-</a>
-
-
-<a
-href="<%= file.path.replace('/upload/','/upload/fl_attachment/') %>"
-class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 flex items-center gap-1">
-
-<i class="ri-download-line"></i>
-Download
-
-</a>
-
-<button 
-onclick="copyLink('<%= file._id %>')"
-class="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600 flex items-center gap-1">
-
-<i class="ri-share-line"></i>
-Copy Link
-
-</button>
-
-
-<a
-href="/delete/<%= file._id %>"
-class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 flex items-center gap-1">
-
-<i class="ri-delete-bin-line"></i>
-Delete
-
-</a>
-
-</div>
-
-</div>
-
-<% }) %>
-
-</div>
-
+<body class="app-shell">
+<div class="orb orb-one"></div>
+<div class="orb orb-two"></div>
+<div class="orb orb-three"></div>
+
+<%
+const totalSizeBytes = files.reduce((sum, file) => sum + (file.size || 0), 0);
+const imageCount = files.filter(file => /\.(png|jpg|jpeg|gif|webp)$/i.test(file.originalname)).length;
+const latestFile = files.length ? files.reduce((latest, current) => new Date(current.createdAt) > new Date(latest.createdAt) ? current : latest) : null;
+const totalSizeMb = (totalSizeBytes / (1024 * 1024)).toFixed(2);
+%>
+
+<main class="dashboard-layout">
+  <section class="dashboard-card animate-rise">
+    <div class="dashboard-topbar">
+      <div>
+        <a href="/home" class="brand">
+          <span class="brand-badge"><i class="ri-hard-drive-3-line"></i></span>
+          <span>MY DRIVE</span>
+        </a>
+        <h1 class="dashboard-title">A cleaner place for your files.</h1>
+        <p class="hero-copy max-w-3xl">
+          Upload, preview, download, and share everything from a dashboard designed to feel lighter and easier to scan.
+        </p>
+      </div>
+
+      <a href="/user/logout" class="button-danger">
+        <i class="ri-logout-box-r-line"></i>
+        Logout
+      </a>
+    </div>
+
+    <div class="dashboard-metrics">
+      <div class="metric-card">
+        <span class="metric-label">Total files</span>
+        <strong class="metric-value"><%= files.length %></strong>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Library size</span>
+        <strong class="metric-value"><%= totalSizeMb %> MB</strong>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Images stored</span>
+        <strong class="metric-value"><%= imageCount %></strong>
+      </div>
+    </div>
+
+    <div class="dashboard-toolbar">
+      <button onclick="scrollToUpload()" class="button-primary" type="button">
+        <i class="ri-upload-cloud-2-line"></i>
+        Upload File
+      </button>
+
+      <label class="search-wrap">
+        <i class="ri-search-line"></i>
+        <input type="text" id="search" placeholder="Search files, dates, or size..." />
+      </label>
+    </div>
+
+    <div class="dashboard-content">
+      <aside class="upload-panel animate-rise" id="uploadSection" style="animation-delay: 0.12s;">
+        <span class="eyebrow">
+          <i class="ri-add-circle-line"></i>
+          Quick upload
+        </span>
+        <h2 class="text-2xl font-semibold mt-5">Drop in your next file</h2>
+        <p class="muted mt-3">
+          Pick a document, image, or download and it will appear in your library right away.
+        </p>
+
+        <form id="uploadForm" action="/upload-file" method="POST" enctype="multipart/form-data" class="mt-6">
+          <label for="dropzone-file" class="upload-dropzone">
+            <input name="file" id="dropzone-file" type="file" required>
+            <div class="upload-copy">
+              <i class="ri-upload-cloud-2-line"></i>
+              <h3 class="text-xl font-semibold mt-4">Choose a file or drag it here</h3>
+              <p class="muted mt-2">Supports PNG, JPG, PDF, and other common file types.</p>
+              <p class="hint mt-3" id="selectedFileText">No file selected yet</p>
+            </div>
+          </label>
+
+          <button type="submit" class="button-primary w-full mt-5">
+            <i class="ri-send-plane-2-line"></i>
+            Upload now
+          </button>
+
+          <div id="progressContainer" class="progress-track hidden">
+            <div id="progressBar" class="progress-fill">0%</div>
+          </div>
+        </form>
+
+        <div class="mt-6">
+          <p class="hint">Latest upload</p>
+          <p class="mt-2 font-medium"><%= latestFile ? latestFile.originalname : "Nothing uploaded yet" %></p>
+        </div>
+      </aside>
+
+      <section class="animate-rise" style="animation-delay: 0.18s;">
+        <% if(files.length === 0) { %>
+          <div class="empty-state">
+            <i class="ri-folder-open-line"></i>
+            <h3 class="text-2xl font-semibold text-white">Your library is empty</h3>
+            <p class="mt-3 max-w-xl mx-auto">Start by uploading your first file and this dashboard will fill in with previews, metadata, and quick actions.</p>
+          </div>
+        <% } else { %>
+          <div class="files-grid">
+            <% files.forEach(file => { %>
+              <div class="file-card">
+                <div class="file-main">
+                  <div class="file-name">
+                    <% if(/\.(png|jpg|jpeg|gif|webp)$/i.test(file.originalname)) { %>
+                      <i class="ri-image-line" style="color:#4fd1c5;"></i>
+                    <% } else if(/\.(pdf)$/i.test(file.originalname)) { %>
+                      <i class="ri-file-pdf-line" style="color:#ff8e72;"></i>
+                    <% } else { %>
+                      <i class="ri-file-line" style="color:#a8b7d8;"></i>
+                    <% } %>
+                    <span><%= file.originalname %></span>
+                  </div>
+
+                  <div class="file-meta">
+                    <span class="chip">
+                      <i class="ri-database-2-line"></i>
+                      <%= file.size ? (file.size / 1024).toFixed(2) : "0.00" %> KB
+                    </span>
+                    <span class="chip">
+                      <i class="ri-time-line"></i>
+                      <%= new Date(file.createdAt).toLocaleString() %>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="file-actions">
+                  <a href="<%= file.path %>" target="_blank" class="button-secondary">
+                    <i class="ri-eye-line"></i>
+                    View
+                  </a>
+
+                  <a href="<%= file.path.replace('/upload/','/upload/fl_attachment/') %>" class="button-primary">
+                    <i class="ri-download-line"></i>
+                    Download
+                  </a>
+
+                  <button onclick="copyLink('<%= file._id %>')" class="button-ghost" type="button">
+                    <i class="ri-share-forward-line"></i>
+                    Copy link
+                  </button>
+
+                  <a href="/delete/<%= file._id %>" class="button-danger">
+                    <i class="ri-delete-bin-line"></i>
+                    Delete
+                  </a>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+      </section>
+    </div>
+  </section>
 </main>
 
-
-
-<script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
-
-
 <script>
-
-/* POPUP */
-
-function showPop(){
-document.querySelector(".pop").style.display="flex"
-}
-
-function hidePop(){
-document.querySelector(".pop").style.display="none"
-}
-
-
-/* SEARCH FILE */
-
-const search=document.getElementById("search")
-
-search.addEventListener("keyup",function(){
-
-const value=this.value.toLowerCase()
-
-const rows=document.querySelectorAll(".file-card")
-
-rows.forEach(row=>{
-
-const name=row.innerText.toLowerCase()
-
-row.style.display=name.includes(value) ? "" : "none"
-
-})
-
-})
-
-function copyLink(id){
-
-const link = window.location.origin + "/share/" + id
-
-navigator.clipboard.writeText(link)
-
-alert("Share link copied!")
-
-}
+const search = document.getElementById("search");
+const fileInput = document.getElementById("dropzone-file");
+const selectedFileText = document.getElementById("selectedFileText");
 const form = document.getElementById("uploadForm");
 
-form.addEventListener("submit", function(e){
+search.addEventListener("keyup", function () {
+  const value = this.value.toLowerCase();
+  const rows = document.querySelectorAll(".file-card");
 
-e.preventDefault();
+  rows.forEach((row) => {
+    const name = row.innerText.toLowerCase();
+    row.style.display = name.includes(value) ? "" : "none";
+  });
+});
 
-const formData = new FormData(form);
+fileInput.addEventListener("change", function () {
+  selectedFileText.textContent = this.files.length ? this.files[0].name : "No file selected yet";
+});
 
-const xhr = new XMLHttpRequest();
-
-xhr.open("POST","/upload-file");
-
-document.getElementById("progressContainer").style.display="block";
-
-xhr.upload.addEventListener("progress", function(e){
-
-if(e.lengthComputable){
-
-const percent = Math.round((e.loaded/e.total)*100);
-
-const bar = document.getElementById("progressBar");
-
-bar.style.width = percent + "%";
-
-bar.innerText = percent + "%";
-
+function copyLink(id) {
+  const link = window.location.origin + "/share/" + id;
+  navigator.clipboard.writeText(link);
+  alert("Share link copied!");
 }
 
-});
+function scrollToUpload() {
+  document.getElementById("uploadSection").scrollIntoView({ behavior: "smooth", block: "start" });
+}
 
-xhr.onload = function(){
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
 
-window.location.reload();
+  const formData = new FormData(form);
+  const xhr = new XMLHttpRequest();
 
-};
+  xhr.open("POST", "/upload-file");
 
-xhr.send(formData);
+  document.getElementById("progressContainer").style.display = "block";
+  document.getElementById("progressContainer").classList.remove("hidden");
 
+  xhr.upload.addEventListener("progress", function (e) {
+    if (e.lengthComputable) {
+      const percent = Math.round((e.loaded / e.total) * 100);
+      const bar = document.getElementById("progressBar");
+
+      bar.style.width = percent + "%";
+      bar.innerText = percent + "%";
+    }
+  });
+
+  xhr.onload = function () {
+    window.location.reload();
+  };
+
+  xhr.send(formData);
 });
 </script>
-
 
 </body>
 </html>
